@@ -1,0 +1,34 @@
+
+spring:
+  main.allow-bean-definition-overriding: true
+  cloud:
+    stream:
+      kinesis:
+        binder:
+          auto-create-stream: false
+          kpl-kcl-enabled: true
+      bindings:
+        processEvent-in-0:
+          destination: tracking-prod-us-east-1-kinesis-data-stream
+          group: Event-Notify-Consumer-Group-1
+          content-type: application/json
+          consumer:
+            concurrency: 5
+      function:
+        destination: processEvent
+
+cloud.aws:
+  stack.auto: false
+  region:
+    static: us-east-1
+    auto: false
+  credentials:
+    profile-name: emr
+
+tracking-system:
+  mongo:
+    username: root
+    password: PepeAdmin!
+    host: localhost
+    port: 27017
+    database: TrackingSystem
